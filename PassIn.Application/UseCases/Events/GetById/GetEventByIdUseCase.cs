@@ -10,7 +10,7 @@ public class GetEventByIdUseCase
     {
         var dbContext = new PassInDbContext();
 
-        var entity = await dbContext.Events.FindAsync(id) ?? throw new PassInException("Evento não encontrado");
+        var entity = await dbContext.Events.FindAsync(id) ?? throw new NotFoundException("Evento não encontrado");
 
         return new ResponseEventJson
         {

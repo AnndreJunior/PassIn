@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using PassIn.Application;
 using PassIn.Application.UseCases.Events.GetById;
+using PassIn.Application.UseCases.Events.RegisterAttendee;
 using PassIn.Communication.Requests;
 using PassIn.Communication.Responses;
 using PassIn.Exceptions;
@@ -16,25 +17,11 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Register(RequestEventJson request)
     {
-        try
-        {
-            var useCase = new RegisterEventsUseCase();
+        var useCase = new RegisterEventsUseCase();
 
-            var response = await useCase.Execute(request);
+        var response = await useCase.Execute(request);
 
-            return Created(string.Empty, response);
-        }
-        catch (PassInException ex)
-        {
-            return BadRequest(new ResponseErrorJson(ex.Message));
-        }
-        catch
-        {
-            return StatusCode(
-                StatusCodes.Status500InternalServerError,
-                new ResponseErrorJson("Erro desconhecido")
-            );
-        }
+        return Created(string.Empty, response);
     }
 
     [HttpGet("{id}")]
@@ -42,23 +29,10 @@ public class EventsController : ControllerBase
     [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> GetById(Guid id)
     {
-        try
-        {
-            var useCase = new GetEventByIdUseCase();
-            var response = await useCase.Execute(id);
+        var useCase = new GetEventByIdUseCase();
 
-            return Ok(response);
-        }
-        catch (PassInException ex)
-        {
-            return NotFound(new ResponseErrorJson(ex.Message));
-        }
-        catch
-        {
-            return StatusCode(
-                StatusCodes.Status500InternalServerError,
-                new ResponseErrorJson("Erro desconhecido")
-            );
-        }
+        var response = await useCase.Execute(id);
+
+        return Ok(response);
     }
 }
