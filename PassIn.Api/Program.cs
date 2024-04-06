@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddRouting(opts => opts.LowercaseUrls = true);
 builder.Services.AddMvc(opts => opts.Filters.Add(typeof(ExceptionFilter)));
 
 var app = builder.Build();

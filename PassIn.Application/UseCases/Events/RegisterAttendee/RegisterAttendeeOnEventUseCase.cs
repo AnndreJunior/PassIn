@@ -6,11 +6,11 @@ using PassIn.Infra;
 
 namespace PassIn.Application.UseCases.Events.RegisterAttendee;
 
-public class RegisterAttendeeOnEvenvUseCase
+public class RegisterAttendeeOnEventUseCase
 {
     private readonly PassInDbContext _context;
 
-    public RegisterAttendeeOnEvenvUseCase(PassInDbContext context)
+    public RegisterAttendeeOnEventUseCase(PassInDbContext context)
     {
         _context = context;
     }

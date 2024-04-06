@@ -1,3 +1,4 @@
+using Microsoft.EntityFrameworkCore;
 using PassIn.Communication.Responses;
 using PassIn.Exceptions;
 using PassIn.Infra;
@@ -10,7 +11,9 @@ public class GetEventByIdUseCase
     {
         var dbContext = new PassInDbContext();
 
-        var entity = await dbContext.Events.FindAsync(id) ?? throw new NotFoundException("Evento não encontrado");
+        var entity = await dbContext.Events
+            .Include(ev => ev.Attendees)
+            .FirstOrDefaultAsync(ev => ev.Id == id) ?? throw new NotFoundException("Evento não encontrado");
 
         return new ResponseEventJson
         {
@@ -18,7 +21,7 @@ public class GetEventByIdUseCase
             Title = entity.Title,
             Details = entity.Details,
             MaximumAttendees = entity.Maximum_Attendees,
-            AttendeesAmount = -1
+            AttendeesAmount = entity.Attendees.Count()
         };
     }
 }
